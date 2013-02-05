@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_YDz9wFQhEeKDE-F2mKLN0Q" type="EcoreTools" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_YGsSoFQhEeKDE-F2mKLN0Q" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_YIkh8FQhEeKDE-F2mKLN0Q" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_YItE0FQhEeKDE-F2mKLN0Q" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_YIu6AFQhEeKDE-F2mKLN0Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="SmartHouse.ecore#//House/name"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_YIu6AVQhEeKDE-F2mKLN0Q"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_YItE0VQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_YItE0lQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_YItE01QhEeKDE-F2mKLN0Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_YItr4FQhEeKDE-F2mKLN0Q" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_YItr4VQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_YItr4lQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_YItr41QhEeKDE-F2mKLN0Q"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_YGsSoVQhEeKDE-F2mKLN0Q" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="SmartHouse.ecore#//House"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YGsSolQhEeKDE-F2mKLN0Q" x="72"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_ojn_IFQhEeKDE-F2mKLN0Q" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_ojomMFQhEeKDE-F2mKLN0Q" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_ojpNQFQhEeKDE-F2mKLN0Q" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_290-4FQhEeKDE-F2mKLN0Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="SmartHouse.ecore#//Room/temp"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_290-4VQhEeKDE-F2mKLN0Q"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_-qMNoFQhEeKDE-F2mKLN0Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="SmartHouse.ecore#//Room/bright"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_-qMNoVQhEeKDE-F2mKLN0Q"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_ojpNQVQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_ojpNQlQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_ojpNQ1QhEeKDE-F2mKLN0Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_ojp0UFQhEeKDE-F2mKLN0Q" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_ojp0UVQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_ojp0UlQhEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_ojp0U1QhEeKDE-F2mKLN0Q"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_ojn_IVQhEeKDE-F2mKLN0Q" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="SmartHouse.ecore#//Room"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ojn_IlQhEeKDE-F2mKLN0Q" x="78" y="148"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_WdcAYFQiEeKDE-F2mKLN0Q" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_WddOgFQiEeKDE-F2mKLN0Q" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_Wdd1kFQiEeKDE-F2mKLN0Q" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_Wdd1kVQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_Wdd1klQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_Wdd1k1QiEeKDE-F2mKLN0Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_Wdd1lFQiEeKDE-F2mKLN0Q" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_Wdd1lVQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_Wdd1llQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_Wdd1l1QiEeKDE-F2mKLN0Q"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_WdcAYVQiEeKDE-F2mKLN0Q" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="SmartHouse.ecore#//Heating"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WdcAYlQiEeKDE-F2mKLN0Q" x="303" y="166"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_bVqTkFQiEeKDE-F2mKLN0Q" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_bVq6oFQiEeKDE-F2mKLN0Q" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_bVq6oVQiEeKDE-F2mKLN0Q" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_bVrhsFQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_bVrhsVQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_bVrhslQiEeKDE-F2mKLN0Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_bVrhs1QiEeKDE-F2mKLN0Q" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_bVrhtFQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_bVrhtVQiEeKDE-F2mKLN0Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_bVrhtlQiEeKDE-F2mKLN0Q"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_bVqTkVQiEeKDE-F2mKLN0Q" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="SmartHouse.ecore#//Window"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bVqTklQiEeKDE-F2mKLN0Q" x="216" y="234"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_YDz9wVQhEeKDE-F2mKLN0Q"/>
+  <element xmi:type="ecore:EPackage" href="SmartHouse.ecore#/"/>
+  <edges xmi:type="notation:Edge" xmi:id="_q8DPEFQhEeKDE-F2mKLN0Q" type="3002" source="_YGsSoFQhEeKDE-F2mKLN0Q" target="_ojn_IFQhEeKDE-F2mKLN0Q">
+    <children xmi:type="notation:Node" xmi:id="_q8GSYFQhEeKDE-F2mKLN0Q" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_q8GSYVQhEeKDE-F2mKLN0Q" x="-1" y="-20"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_q8G5cFQhEeKDE-F2mKLN0Q" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_q8G5cVQhEeKDE-F2mKLN0Q" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_q8DPEVQhEeKDE-F2mKLN0Q" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_q8DPElQhEeKDE-F2mKLN0Q" fontColor="4210752" fontName="Lucida Grande" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="SmartHouse.ecore#//House/room"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_q8DPE1QhEeKDE-F2mKLN0Q" points="[-3, 24, -9, -121]$[-44, 143, -50, -2]"/>
+  </edges>
+</notation:Diagram>

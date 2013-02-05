@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SmartHouse:House
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SmartHouse="http://dsg.cs.tcd.ie/smarthouse"
+    xsi:schemaLocation="http://dsg.cs.tcd.ie/smarthouse SmartHouse.ecore"
+    name="myhouse"
+    eprice="25.0"
+    time="23"
+    outtemp="5">
+  <room temp="9.0"
+      bright="4000.0"
+      air="6"
+      name="liv">
+    <window
+        name="w1"/>
+    <heating
+        name="h1"/>
+    <heating
+        name="h2"/>
+    <light level="3"/>
+  </room>
+  <wh temp="20"
+      on="true"/>
+  <ev name="donkey"
+      pluged="true"
+      level="10"
+      charging="true"/>
+</SmartHouse:House>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SmartHouse:House
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SmartHouse="http://dsg.cs.tcd.ie/smarthouse"
+    xsi:schemaLocation="http://dsg.cs.tcd.ie/smarthouse SmartHouse.ecore"
+    name="myhouse"
+    eprice="10.0"
+    time="14"
+    outtemp="12">
+  <room temp="9.0"
+      bright="4000.0"
+      name="liv">
+    <window
+        name="w1"/>
+    <window
+        name="w2"
+        opened="true"/>
+    <heating
+        name="h1"/>
+    <heating
+        name="h2"
+        level="7"/>
+    <light level="0"/>
+    <light level="3"/>
+    <ac level="0"/>
+    <projector
+        on="true"
+        brightness="5"
+        volume="6"/>
+    <cm loaded="true"
+        warming="true"/>
+  </room>
+  <room bright="30.0"
+      air="6"
+      name="kitchen">
+    <light level="3"/>
+    <cooker
+        on="true"/>
+    <cm loaded="true"
+        on="true"
+        warming="true"/>
+  </room>
+  <room temp="15.0"
+      bright="4000"
+      air="7"
+      name="bed1">
+    <window
+        name="w1"
+        curtainOn="true"
+        opened="true"/>
+    <heating
+        name="h"
+        level="6"/>
+    <light level="0"/>
+    <ac level="0"/>
+  </room>
+  <room temp="10.0"
+      bright="2000"
+      name="bed2">
+    <window
+        name="w1"
+        opened="true"/>
+    <heating
+        name="h"
+        level="6"/>
+    <light level="2"/>
+    <ac level="0"/>
+  </room>
+  <room temp="20.0"
+      bright="4000.0"
+      name="family">
+    <window
+        name="w1"/>
+    <window
+        name="w2"
+        opened="true"/>
+    <heating
+        name="h1"/>
+    <heating
+        name="h2"
+        level="10"/>
+    <light level="0"/>
+    <ac level="0"/>
+    <projector
+        brightness="5"
+        volume="9"/>
+    <wm loaded="true"/>
+  </room>
+  <room temp="22.0"
+      bright="500"
+      air="8"
+      name="bed3">
+    <window
+        name="w1"
+        curtainOn="true"
+        opened="true"/>
+    <heating
+        name="h"/>
+    <light level="0"/>
+  </room>
+  <room temp="25.0"
+      bright="2000"
+      name="bath1">
+    <heating
+        name="h1"
+        level="10"/>
+    <light level="3"/>
+  </room>
+  <room temp="30.0"
+      bright="1000"
+      air="6"
+      name="liv2">
+    <window
+        name="w1"/>
+    <window
+        name="w2"
+        opened="true"/>
+    <window
+        name="23"/>
+    <heating
+        name="h1"/>
+    <light level="0"/>
+    <ac level="0"/>
+    <cm loaded="true"
+        warming="true"/>
+  </room>
+  <room temp="35.0"
+      bright="500"
+      air="8"
+      name="bed4">
+    <window
+        name="w1"/>
+    <heating
+        name="h"/>
+    <light level="0"/>
+    <ac level="4"/>
+  </room>
+  <room temp="8.0"
+      bright="0"
+      name="hall">
+    <heating
+        name="hallh"
+        level="9"/>
+    <wm loaded="true"/>
+    <cm loaded="true"
+        on="true"/>
+  </room>
+  <room temp="35.0"
+      bright="1000"
+      name="bath1">
+    <window
+        name="w1"
+        opened="true"/>
+    <heating
+        name="h1"
+        level="10"/>
+    <light level="3"/>
+  </room>
+  <room temp="35.0"
+      bright="5000"
+      air="6"
+      name="guest">
+    <window
+        name="w1"/>
+    <window
+        name="w2"
+        opened="true"/>
+    <window
+        name="23"/>
+    <window
+        name="w3"
+        curtainOn="true"
+        opened="true"/>
+    <heating
+        name="h1"/>
+    <light level="0"/>
+    <light level="7"/>
+    <ac level="0"/>
+    <cm loaded="true"
+        on="true"
+        warming="true"/>
+  </room>
+  <room temp="35.0"
+      bright="500"
+      air="8"
+      name="bed5">
+    <window
+        name="w1"/>
+    <window
+        name="w4"/>
+    <heating
+        name="h"/>
+    <heating
+        name="h2"
+        level="9"/>
+    <light level="0"/>
+    <ac level="4"/>
+    <projector
+        on="true"
+        brightness="5"
+        volume="8"/>
+    <wm/>
+  </room>
+  <wh temp="20"
+      on="true"/>
+  <ev name="donkey"
+      level="90"/>
+  <ev name="horse"
+      pluged="true"
+      level="10"
+      charging="true"/>
+  <gate/>
+  <sec/>
+</SmartHouse:House>

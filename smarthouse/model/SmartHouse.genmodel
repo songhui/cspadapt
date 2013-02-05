@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/smarthouse/src" modelPluginID="smarthouse" modelName="SmartHouse"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>SmartHouse.ecore</foreignModel>
+  <genPackages prefix="SmartHouse" disposableProviderFactory="true" ecorePackage="SmartHouse.ecore#/">
+    <genClasses ecoreClass="SmartHouse.ecore#//House">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//House/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//House/eprice"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//House/time"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//House/outtemp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/room"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/member"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/wh"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/ev"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/gate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//House/sec"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Gate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Gate/outlocked"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//Gate/house"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Security">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Security/on"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//Security/house"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Person">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Person/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//WaterHeater">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//WaterHeater/temp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//WaterHeater/on"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//WaterHeater/boost"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//WaterHeater/house"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//EV">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//EV/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//EV/pluged"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//EV/level"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//EV/charging"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//EV/house"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Room">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Room/temp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Room/bright"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Room/air"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Room/name"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/house"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/window"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/heating"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/light"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/ac"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/occupied"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/sensor"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/projector"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/cooker"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/wm"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//Room/cm"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Heating">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Heating/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Heating/level"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Window">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Window/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Window/curtainOn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Window/opened"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//AirConditioner">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//AirConditioner/level"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//AirConditioner/freshAir"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//AirConditioner/room"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Light">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Light/level"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Projector">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Projector/on"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Projector/brightness"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Projector/volume"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//Projector/room"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//WashingMachine">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//WashingMachine/loaded"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//WashingMachine/on"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SmartHouse.ecore#//WashingMachine/room"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Sensor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Sensor/temp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Sensor/air"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Sensor/brightness"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Sensor/battery"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Sensor/circle"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//Cooker">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//Cooker/on"/>
+    </genClasses>
+    <genClasses ecoreClass="SmartHouse.ecore#//CoffeeMaker">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//CoffeeMaker/loaded"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//CoffeeMaker/on"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SmartHouse.ecore#//CoffeeMaker/warming"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference SmartHouse.ecore#//CoffeeMaker/room"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
