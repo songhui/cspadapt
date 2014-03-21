@@ -1,0 +1,30 @@
+import ecore : 'http://www.eclipse.org/emf/2002/Ecore#/';
+package vmplacement : vmp = 'http://www.modelbased.net/constraint'
+{
+	class VM{
+		id String name 
+		Integer mem
+		config Integer core : {domain = Set{1,2,4,8} resistance = 20}
+		config PM plc : { resistance=(mem*10) }
+		VM[*] backup : {
+			derived VM.allInstances()->select(v|v.app.name = self.app.name)}
+		ref VM[*] frqt
+		ref App app opposite deploy		
+		constraint (hard) CoreLimit: self.core < self.plc.core
+		constraint BackupRemote: backup->forAll(e|e.plc <> self.plc)
+		constraint (priority = 30) FrequentNear :
+			frqt->forAll(v|v.plc.near->includes(self.plc))
+	}
+	class PM{
+		Integer mem		Integer core		ref PM[*] near
+		ref VM[*] hosting:{derived VM.allInstances()->select(plc=self)}
+		constraint(hard) MemLimit:
+			hosting->collect(e|e.mem)->sum() < mem
+	}
+	class App{
+		id String name
+		ref VM deploy opposite app
+	}
+}
+
+

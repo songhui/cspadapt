@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ocl2Csp
+Bundle-SymbolicName: ocl2csp
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ocl2csp.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ocl.ecore;bundle-version="3.2.0",
+ org.eclipse.xtext.xbase.lib;bundle-version="2.3.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: ocl2csp.codegen

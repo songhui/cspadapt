@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<VmPlacement:System
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:VmPlacement="http://www.sintef.no/ict/vmplacement"
+    xsi:schemaLocation="http://www.sintef.no/ict/vmplacement ../model/VmPlacement.ecore"
+    name="s1">
+  <vm name="vm1"
+      req="7"
+      plc="pm1"
+      host="app1"/>
+  <vm name="vm2"
+      req="9"
+      plc="pm1"
+      frequent="vm3"
+      host="app1"/>
+  <vm name="vm3"
+      req="3"
+      plc="pm2"
+      frequent="vm2"
+      host="app3"/>
+  <pm name="pm1"
+      res="16"/>
+  <pm name="pm2"
+      res="16"/>
+  <app name="app1"
+      destination="vm2"/>
+  <app name="app1"
+      destination="vm1"/>
+  <app name="app3"
+      destination="vm3"/>
+</VmPlacement:System>

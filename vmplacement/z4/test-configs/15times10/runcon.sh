@@ -1,0 +1,1 @@
+PYTHONPATH=/cygdrive/c/tools/z3/bin/ python -m unittest ConstrastVmPlcZ4.TestContrast

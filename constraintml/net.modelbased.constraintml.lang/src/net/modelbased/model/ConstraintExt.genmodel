@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.modelbased.constraintml.lang/src" modelPluginID="net.modelbased.constraintml.lang"
+    modelName="ConstraintExt" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    usedGenPackages="../../../../../org.eclipse.ocl.examples.xtext.base/model/BaseCST.genmodel#//baseCST ../../../../../org.eclipse.ocl.examples.pivot/model/Pivot.merged.genmodel#//pivot"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>ConstraintExt.ecore</foreignModel>
+  <genPackages prefix="ConstraintExt" basePackage="net.modelbased" disposableProviderFactory="true"
+      ecorePackage="ConstraintExt.ecore#/">
+    <genClasses ecoreClass="ConstraintExt.ecore#//ConfigAnno"/>
+    <genClasses ecoreClass="ConstraintExt.ecore#//ExpDetail">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ConstraintExt.ecore#//ExpDetail/expr"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

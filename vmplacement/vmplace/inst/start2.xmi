@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<VmPlacement:System
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:VmPlacement="http://www.sintef.no/ict/vmplacement"
+    xsi:schemaLocation="http://www.sintef.no/ict/vmplacement ../model/VmPlacement.ecore">
+  <vm name="vm1"/>
+  <vm name="vm2"/>
+  <pm name="pm1"/>
+</VmPlacement:System>

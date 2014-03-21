@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SmartHouse:Gate xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SmartHouse="http://dsg.cs.tcd.ie/smarthouse" xsi:schemaLocation="http://dsg.cs.tcd.ie/smarthouse SmartHouse.ecore"/>
