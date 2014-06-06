@@ -7,23 +7,15 @@ Created on 12 Nov 2013
 from z3 import *
 from random import randint
 from time import clock
+from softz3 import *
 import unittest
 
 
-class SoftSolver():
+class SoftSolverOpt(SoftSolver):
     
     def __init__(self):
-        self.soft = []
-        self.hard = []
-        self.weight = []
-        self._weight_var = []
-        self._last_result = None
-        self._last_model = None
+        SoftSolver.__init__(self)
         self._total = None
-        
-    def add_soft(self, cst, wt):
-        self.soft.append(cst)
-        self.weight.append(wt)    
     
     def init_solver(self):
         
@@ -31,9 +23,9 @@ class SoftSolver():
         
         for cst in self.hard:
             self.solver.add(cst)
-        for i, cst in enumerate(self.soft):
+        for i, (cst, wt) in enumerate(self.soft):
             w = Int('w'+str(i))
-            self.solver.add(w == If(cst, 0, self.weight[i]))
+            self.solver.add(w == If(cst, 0, wt))
             self._weight_var.append(w)
         self._total = Int('total')
         self.solver.add(self._total == Sum(self._weight_var))    
@@ -51,9 +43,7 @@ class SoftSolver():
         else:
             self.pop()
             return -1
-    
-    def last_sat(self):
-        return self._last_result == Z3_L_TRUE    
+      
     
     
     def additional_hard(self, constraints):
@@ -62,16 +52,10 @@ class SoftSolver():
             self.solver.add(cst)
     def pop(self):
         self.solver.pop()    
-        
-    def model(self):
-        return self._last_model
-    
-    def print_state_time(self):
-        print 'Result: %s, Time: %.2f' % (self._last_result, clock())
-        
-        
-        
-        
+
+    def search(self):
+        return self.binary_search(0, 1000000, 50)
+  
     def binary_search(self, floor, ceiling, diff):
         original_ceiling = ceiling
         self._last_result == None

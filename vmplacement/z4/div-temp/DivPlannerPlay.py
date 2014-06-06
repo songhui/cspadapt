@@ -5,7 +5,8 @@ Created on 12 Nov 2013
 '''
 
 from z3 import *
-from z5 import *
+from softz3_opt import *
+from softz3_diagnose import *
 from random import randint
 from time import clock
 import unittest
@@ -52,7 +53,8 @@ class Test(unittest.TestCase):
         ict = Const('ct', TypeC)
         
         
-        solver = SoftSolver()
+        solver = SoftSolverOpt()
+        #solver = SoftSolverDiagnose()
 
         #never deploy to the same destination
         solver.hard.append(ForAll([ia,iaa], Implies(dAB(ia)==dAB(iaa), ia==iaa)))
@@ -72,18 +74,15 @@ class Test(unittest.TestCase):
         
         for i in range(0,numA) :
             solver.hard.append(dAB(a[i])==b[i])
-            #solver.weight.append(randint(400,500))
+            #solver.add_soft(dAB(a[i])==b[i], randint(20,30))
         for i in range(0,numB):
             solver.hard.append(dBC(b[i])==c[i])
-            #solver.weight.append(randint(400,500))
+            #solver.add_soft(dBC(b[i])==c[i], randint(20,30))
             
         for i in range(0,numA):
-            solver.soft.append(toA(a[i])==A[0])
-            solver.weight.append(randint(5,10))
-            solver.soft.append(toB(b[i])==B[0])
-            solver.weight.append(randint(5,10))
-            solver.soft.append(toC(c[i])==C[0])
-            solver.weight.append(randint(5,10))
+            solver.add_soft( toA(a[i])==A[0], randint(5,10) )
+            solver.add_soft( toB(b[i])==B[0], randint(5,10) )
+            solver.add_soft( (toC(c[i])==C[0]), randint(5,10) )
 
 
         
@@ -96,7 +95,8 @@ class Test(unittest.TestCase):
         solver.init_solver()
         
         print len(solver.soft)
-        print "final total: %d" % solver.binary_search(0, 100000, 50)
+        solver.debug = False
+        print "final total: %d" % solver.search()
             
         
         
