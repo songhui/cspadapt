@@ -89,12 +89,14 @@ class Test(unittest.TestCase):
         
 
         for x in a:
-            solver.add_soft(toA(x)==A[randint(1,9)], randint(20,30))
+            if randint(0,9) < 1 :
+                solver.add_soft(toA(x)==A[randint(1,9)], randint(20,30))
         #solver.additional_hard([And(toA(a[1])==A[1], toA(a[2])==A[1], toA(a[3])==A[1])])
         
         solver.init_solver()
         
         print len(solver.soft)
+        solver.error = 200
         solver.debug = False
         print "final total: %d" % solver.search()
             

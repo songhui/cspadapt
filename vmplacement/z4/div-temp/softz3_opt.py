@@ -13,9 +13,11 @@ import unittest
 
 class SoftSolverOpt(SoftSolver):
     
+    
     def __init__(self):
         SoftSolver.__init__(self)
         self._total = None
+        self.error = 50
     
     def init_solver(self):
         
@@ -54,14 +56,14 @@ class SoftSolverOpt(SoftSolver):
         self.solver.pop()    
 
     def search(self):
-        return self.binary_search(0, 1000000, 50)
+        return self.binary_search(0, 1000000, self.error)
   
-    def binary_search(self, floor, ceiling, diff):
+    def binary_search(self, floor, ceiling, error):
         original_ceiling = ceiling
         self._last_result == None
         print clock()
         
-        while ceiling - floor > diff:
+        while ceiling - floor > error:
             mid = (ceiling + floor) / 2
             r = self.check(mid)
             if r > 0:
