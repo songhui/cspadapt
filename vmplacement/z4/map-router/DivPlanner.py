@@ -5,8 +5,7 @@ Created on 12 Nov 2013
 '''
 
 from z3 import *
-from softz3_opt import *
-from softz3_diagnose import *
+from z5 import *
 from random import randint
 from time import clock
 import unittest
@@ -42,10 +41,6 @@ class Test(unittest.TestCase):
         toB = Function('toB', InstB, TypeB)
         toC = Function('toC', InstC, TypeC)
         
-        #Sample of state-based constraints
-        memB = Function('memA', InstB, IntSort())
-        memC = Function('memB', InstC, IntSort())
-        
         ia = Const('a', InstA)
         iaa = Const('aa', InstA)
         iat = Const('at', TypeA)
@@ -57,8 +52,7 @@ class Test(unittest.TestCase):
         ict = Const('ct', TypeC)
         
         
-        solver = SoftSolverOpt()
-        #solver = SoftSolverDiagnose()
+        solver = SoftSolver()
 
         #never deploy to the same destination
         solver.hard.append(ForAll([ia,iaa], Implies(dAB(ia)==dAB(iaa), ia==iaa)))
@@ -74,38 +68,46 @@ class Test(unittest.TestCase):
                           Implies(And(dBC(ib)==ic),
                                   And([Implies(toB(ib)==B[x], Or([toC(ic)==C[z] for z in y])) for (x,y) in mapBC]))))
         
-        solver.hard.append(ForAll([ib], memB(ib)<=memC(dBC(ib))))
         
         
         for i in range(0,numA) :
-            solver.hard.append(dAB(a[i])==b[i])
-            #solver.add_soft(dAB(a[i])==b[i], randint(20,30))
+            solver.soft.append(dAB(a[i])==b[i])
+            solver.weight.append(randint(400,500))
         for i in range(0,numB):
-            solver.hard.append(dBC(b[i])==c[i])
-            #solver.add_soft(dBC(b[i])==c[i], randint(20,30))
+            solver.soft.append(dBC(b[i])==c[i])
+            solver.weight.append(randint(400,500))
             
         for i in range(0,numA):
-            solver.add_soft( toA(a[i])==A[0], randint(5,10) )
-            solver.add_soft( toB(b[i])==B[0], randint(5,10) )
-            solver.add_soft( (toC(c[i])==C[0]), randint(5,10) )
+            solver.soft.append(toA(a[i])==A[0])
+            solver.weight.append(randint(100,200))
+            solver.soft.append(toB(b[i])==B[0])
+            solver.weight.append(randint(100,200))
+            solver.soft.append(toC(c[i])==C[0])
+            solver.weight.append(randint(100,200))
 
-
-        for x in b:
-            solver.hard.append(Implies(toB(x)==B[0], memB(x)==15))
-        
-        solver.hard.append(And(memC(c[0])==10, memC(c[1])==10, memC(c[2])==10))
-
-        for x in a:
-            if randint(0,9) < 1 :
-                solver.add_soft(toA(x)==A[randint(1,9)], randint(20,30))
-        #solver.additional_hard([And(toA(a[1])==A[1], toA(a[2])==A[1], toA(a[3])==A[1])])
-        
         solver.init_solver()
+
+        solver.additional_hard([And(toA(a[1])==A[1], toA(a[2])==A[1], toA(a[3])==A[1])])
         
-        print len(solver.soft)
-        solver.error = 200
-        solver.debug = False
-        print "final total: %d" % solver.search()
+        
+        print "final total: %d" % solver.binary_search(0, 10000, 500)
+
+        #Test the performance of Z3: with a small number (unsat): 0.2 second, a big number (sat) 4 seconds... 
+#         for i in range(0,10):
+#             value = randint(0,1200)
+#             print value
+#             solver.check(value)
+#             solver.print_state_time()
+#         
+#         print 2000
+#         solver.check(2000)
+#         solver.print_state_time()
+#             
+#         for i in range(0,10):
+#             value = randint(3000, 100000)
+#             print value
+#             solver.check(value)
+#             solver.print_state_time()
             
         
         
