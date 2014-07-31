@@ -5,7 +5,8 @@ Created on 12 Nov 2013
 '''
 
 from z3 import *
-from z5 import *
+from softz3_opt import *
+from softz3_diagnose import *
 from random import randint
 from time import clock
 import unittest
@@ -14,112 +15,69 @@ class Test(unittest.TestCase):
 
     def testName(self):
         
-        numA = 20
-        numB = 20
-        numC = 20
+        AlgoT, algoT = EnumSort('AlgoT', ['algoT_pol','algoT_traf','algoT_goog'])
+        AlgoI, algoI = EnumSort('AlgoI', ['algo1','algo2','algonew'])
         
-        tnumA = 10
-        tnumB = 5
-        tnumC = 5
+        EncT, encT = EnumSort('EncT',['encT_pol', 'encT_traf'])
+        EncI, encI = EnumSort('EncI', ['enc1', 'enc2', 'encnull'])
         
-        mapAB = [(0, [0,1,2]), (1, [1]), (2, [1,2,4]), (3,[1,4]), (4,[2,3]), (5, [1,3]), (6, [1,4]), (7, [1])]
-        mapBC = [(0, [0,1]), (1,[1]), (2,[1,2,3]), (3,[1,4])]
+        VmT, vmT = EnumSort('VmT', ['ec2', 'azure'])
+        VmI, vmI = EnumSort('VmI', ['vm1', 'vm2', 'vmnull'])
         
-        InstA, a = EnumSort('InstA', ['a%d' % i for i in range(0,numA)])
-        TypeA, A = EnumSort('TypeA', ['A%d' % i for i in range(0,tnumA)])
+        toAlgo = Function('toAlgo', AlgoI, AlgoT)
+        toEnc = Function('toEnc', EncI, EncT)
+        toVm = Function('toVm', VmI, VmT)
         
-        InstB, b = EnumSort('InstB', ['b%d' % i for i in range(0,numB)])
-        TypeB, B = EnumSort('TypeB', ['B%d' % i for i in range(0,tnumB)])
+        dAlgoEnc = Function('dAlgoEnc', AlgoI, EncI)
+        dAlgoVm = Function('dAlgoVm', AlgoI, VmI)
+        dEncVm = Function('dEncVm', EncI, VmI)
         
-        InstC, c = EnumSort('InstC', ['c%d' % i for i in range(0,numC)])
-        TypeC, C = EnumSort('TypeC', ['C%d' % i for i in range(0,tnumC)])
-
-        dAB = Function('dAB', InstA, InstB)
-        dBC = Function('dBC', InstB, InstC)
+        useAlgo = Function('useAlgo', AlgoI, BoolSort())
+        useEnc = Function('useEnc', EncI, BoolSort())
+        useVm = Function('useVM', VmI, BoolSort())
         
-        toA = Function('toA', InstA, TypeA)
-        toB = Function('toB', InstB, TypeB)
-        toC = Function('toC', InstC, TypeC)
+        memVm = Function('memVM', VmI, IntSort())
+        memAlgo = Function('memAlgo', AlgoI, IntSort())
         
-        ia = Const('a', InstA)
-        iaa = Const('aa', InstA)
-        iat = Const('at', TypeA)
-        ib = Const('b', InstB)
-        ibb = Const('bb', InstB)
-        ibt = Const('bt', TypeB)
-        ic = Const('c', InstC)
-        icc = Const('cc', InstC)
-        ict = Const('ct', TypeC)
+        iAlgo = Const('iAlgo', AlgoI)
+        iiAlgo = Const('iiAlgo', AlgoI)
+        iEnc = Const('iEnc', EncI)
+        iiEnc = Const('iiEnc', EncI)
+        iVm = Const('iVm', VmI)
+        iiVm = Const('iiVm', VmI)
         
+        solver = SoftSolverOpt()
         
-        solver = SoftSolver()
-
-        #never deploy to the same destination
-        solver.hard.append(ForAll([ia,iaa], Implies(dAB(ia)==dAB(iaa), ia==iaa)))
-        solver.hard.append(ForAll([ib,ibb], Implies(dBC(ib)==dBC(ibb), ib==ibb)))
+        solver.hard.append(
+            ForAll([iAlgo], Implies(useAlgo(iAlgo),
+                        And(
+                            Implies(toAlgo(iAlgo)==algoT[0], toEnc(dAlgoEnc(iAlgo)) == encT[0]),
+                            Implies(toAlgo(iAlgo)==algoT[1], Or(toEnc(dAlgoEnc(iAlgo))== encT[0], toEnc(dAlgoEnc(iAlgo))== encT[1])),
+                            Implies(toAlgo(iAlgo)==algoT[2], And(dAlgoEnc(iAlgo)==encI[2],dAlgoVm(iAlgo)==vmI[2])),
+                            Implies(Or(toAlgo(iAlgo)==algoT[0], toAlgo(iAlgo)==algoT[1]), useVm(dAlgoVm(iAlgo)))
+                        )
+                      )            
+                  )
+        )
         
+        solver.hard.append(And(useAlgo(algoI[0]), useAlgo(algoI[1])))
+        solver.add_hard(toAlgo(algoI[1])==algoT[2])
         
-        #Deployment constraints
-        solver.hard.append(ForAll([ia, ib],
-                          Implies(And(dAB(ia)==ib),
-                                  And([Implies(toA(ia)==A[x], Or([toB(ib)==B[z] for z in y])) for (x,y) in mapAB]))))
+        solver.add_soft(True, 0)
         
-        solver.hard.append(ForAll([ib, ic],
-                          Implies(And(dBC(ib)==ic),
-                                  And([Implies(toB(ib)==B[x], Or([toC(ic)==C[z] for z in y])) for (x,y) in mapBC]))))
-        
-        
-        
-        for i in range(0,numA) :
-            solver.soft.append(dAB(a[i])==b[i])
-            solver.weight.append(randint(400,500))
-        for i in range(0,numB):
-            solver.soft.append(dBC(b[i])==c[i])
-            solver.weight.append(randint(400,500))
-            
-        for i in range(0,numA):
-            solver.soft.append(toA(a[i])==A[0])
-            solver.weight.append(randint(100,200))
-            solver.soft.append(toB(b[i])==B[0])
-            solver.weight.append(randint(100,200))
-            solver.soft.append(toC(c[i])==C[0])
-            solver.weight.append(randint(100,200))
-
         solver.init_solver()
-
-        solver.additional_hard([And(toA(a[1])==A[1], toA(a[2])==A[1], toA(a[3])==A[1])])
         
-        
-        print "final total: %d" % solver.binary_search(0, 10000, 500)
-
-        #Test the performance of Z3: with a small number (unsat): 0.2 second, a big number (sat) 4 seconds... 
-#         for i in range(0,10):
-#             value = randint(0,1200)
-#             print value
-#             solver.check(value)
-#             solver.print_state_time()
-#         
-#         print 2000
-#         solver.check(2000)
-#         solver.print_state_time()
-#             
-#         for i in range(0,10):
-#             value = randint(3000, 100000)
-#             print value
-#             solver.check(value)
-#             solver.print_state_time()
+        print len(solver.soft)
+        solver.error = 200
+        solver.debug = False
+        print "final total: %d" % solver.search()
             
         
         
         eval = solver.model().eval
         
+        print eval
         
-        for x in a:
-            print "%s : %s => %s" % (x, eval(toA(x)), eval(dAB(x)))
-        for x in b:
-            print "%s : %s => %s" % (x, eval(toB(x)), eval(dBC(x)))
-        for x in c:
-            print "%s : %s" % (x, eval(toC(x)))
         
         #print eval(countA)  
        
