@@ -60,6 +60,7 @@ class Test(unittest.TestCase):
                   )
         )
         
+        
         solver.hard.append(And(useAlgo(algoI[0]), useAlgo(algoI[1])))
         solver.add_hard(toAlgo(algoI[1])==algoT[2])
         
