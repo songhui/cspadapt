@@ -5,10 +5,12 @@
 <path>/${PROJECT_DIR_NAME}/lib</path>
 <path>/${PROJECT_DIR_NAME}/vmplc</path>
 <path>/${PROJECT_DIR_NAME}/src</path>
+<path>/z4/map-router</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">/usr/bin/python</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
 <path>C:\tools\z3\bin</path>
+<path>/usr/local/z343/bin</path>
 </pydev_pathproperty>
 </pydev_project>

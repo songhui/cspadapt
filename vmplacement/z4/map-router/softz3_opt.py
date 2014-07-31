@@ -74,7 +74,7 @@ class SoftSolverOpt(SoftSolver):
             self.print_state_time()
         
         if ceiling == original_ceiling:
-            return check(ceiling)        
+            return self.check(ceiling)        
         else: 
             return ceiling
         

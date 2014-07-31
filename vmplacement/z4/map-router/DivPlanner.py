@@ -10,6 +10,7 @@ from softz3_diagnose import *
 from random import randint
 from time import clock
 import unittest
+from painter import *
 
 class Test(unittest.TestCase):
 
@@ -79,7 +80,11 @@ class Test(unittest.TestCase):
         
         print eval
         
-        
+        rp = ResultPainter()
+        rp.vars = algoI + encI + vmI
+        rp.refs = [dAlgoEnc, dAlgoVm, dEncVm]
+        rp.eval = eval
+        rp.make_graph()
         #print eval(countA)  
        
  
