@@ -55,15 +55,26 @@ class Test(unittest.TestCase):
                             Implies(toAlgo(iAlgo)==algoT[0], toEnc(dAlgoEnc(iAlgo)) == encT[0]),
                             Implies(toAlgo(iAlgo)==algoT[1], Or(toEnc(dAlgoEnc(iAlgo))== encT[0], toEnc(dAlgoEnc(iAlgo))== encT[1])),
                             Implies(toAlgo(iAlgo)==algoT[2], And(dAlgoEnc(iAlgo)==encI[2],dAlgoVm(iAlgo)==vmI[2])),
-                            Implies(Or(toAlgo(iAlgo)==algoT[0], toAlgo(iAlgo)==algoT[1]), useVm(dAlgoVm(iAlgo)))
+                            Implies(Or(toAlgo(iAlgo)==algoT[0], toAlgo(iAlgo)==algoT[1]), And(useVm(dAlgoVm(iAlgo)), useEnc(dAlgoEnc(iAlgo))))
                         )
                       )            
                   )
         )
         
+        solver.hard.append(
+            ForAll([iEnc], 
+                useEnc(iEnc) == useVm(dEncVm(iEnc))
+            )
+        )
+        
+        solver.hard.append(toVm(vmI[0])!=toVm(vmI[1]))
         
         solver.hard.append(And(useAlgo(algoI[0]), useAlgo(algoI[1])))
         solver.add_hard(toAlgo(algoI[1])==algoT[2])
+        solver.add_hard(toAlgo(algoI[0])==algoT[0])
+        solver.hard.append(Not(useVm(vmI[2])))
+        solver.hard.append(Not(useEnc(encI[2])))
+        
         
         solver.add_soft(True, 0)
         
@@ -79,10 +90,15 @@ class Test(unittest.TestCase):
         eval = solver.model().eval
         
         print eval
+        print eval(dEncVm(encI[1]))
+        print eval(dAlgoVm(algoI[0]))
+        print eval(useEnc(encI[1]))
         
         rp = ResultPainter()
         rp.vars = algoI + encI + vmI
         rp.refs = [dAlgoEnc, dAlgoVm, dEncVm]
+        rp.types = [toAlgo, toEnc, toVm]
+        #rp.filters = [useAlgo, useEnc, useVm]
         rp.eval = eval
         rp.make_graph()
         #print eval(countA)  
