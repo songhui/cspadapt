@@ -16,14 +16,14 @@ class Test(unittest.TestCase):
 
     def testName(self):
         
-        AlgoT, algoT = EnumSort('AlgoT', ['algoT_pol','algoT_traf','algoT_goog'])
+        AlgoT, (algoT_pol, algoT_traf, algoT_goog) = EnumSort('AlgoT', ['algoT_pol','algoT_traf','algoT_goog'])
         AlgoI, algoI = EnumSort('AlgoI', ['algo1','algo2','algonew'])
         
-        EncT, encT = EnumSort('EncT',['encT_pol', 'encT_traf'])
-        EncI, encI = EnumSort('EncI', ['enc1', 'enc2', 'encnull'])
+        EncT, (encT_pol, encT_traf) = EnumSort('EncT',['encT_pol', 'encT_traf'])
+        EncI, encI = EnumSort('EncI', ['encnull','enc1', 'enc2'])
         
-        VmT, vmT = EnumSort('VmT', ['ec2', 'azure'])
-        VmI, vmI = EnumSort('VmI', ['vm1', 'vm2', 'vmnull'])
+        VmT, (vmT_ec2, vmT_azure) = EnumSort('VmT', ['vmT_ec2', 'vmT_azure'])
+        VmI, vmI = EnumSort('VmI', ['vmnull', 'vm1', 'vm2'])
         
         toAlgo = Function('toAlgo', AlgoI, AlgoT)
         toEnc = Function('toEnc', EncI, EncT)
@@ -52,10 +52,10 @@ class Test(unittest.TestCase):
         solver.hard.append(
             ForAll([iAlgo], Implies(useAlgo(iAlgo),
                         And(
-                            Implies(toAlgo(iAlgo)==algoT[0], toEnc(dAlgoEnc(iAlgo)) == encT[0]),
-                            Implies(toAlgo(iAlgo)==algoT[1], Or(toEnc(dAlgoEnc(iAlgo))== encT[0], toEnc(dAlgoEnc(iAlgo))== encT[1])),
-                            Implies(toAlgo(iAlgo)==algoT[2], And(dAlgoEnc(iAlgo)==encI[2],dAlgoVm(iAlgo)==vmI[2])),
-                            Implies(Or(toAlgo(iAlgo)==algoT[0], toAlgo(iAlgo)==algoT[1]), And(useVm(dAlgoVm(iAlgo)), useEnc(dAlgoEnc(iAlgo))))
+                            Implies(toAlgo(iAlgo)==algoT_pol, toEnc(dAlgoEnc(iAlgo)) == encT_pol),
+                            Implies(toAlgo(iAlgo)==algoT_traf, Or(toEnc(dAlgoEnc(iAlgo))== encT_pol, toEnc(dAlgoEnc(iAlgo))== encT_traf)),
+                            Implies(toAlgo(iAlgo)==algoT_goog, And(dAlgoEnc(iAlgo)==encI[0],dAlgoVm(iAlgo)==vmI[0])),
+                            Implies(Or(toAlgo(iAlgo)==algoT_pol, toAlgo(iAlgo)==algoT_traf), And(useVm(dAlgoVm(iAlgo)), useEnc(dAlgoEnc(iAlgo))))
                         )
                       )            
                   )
@@ -67,22 +67,25 @@ class Test(unittest.TestCase):
             )
         )
         
-        solver.hard.append(toVm(vmI[0])!=toVm(vmI[1]))
+        solver.hard.append(toVm(vmI[1])!=toVm(vmI[2]))
         
         solver.hard.append(And(useAlgo(algoI[0]), useAlgo(algoI[1])))
-        solver.add_hard(toAlgo(algoI[1])==algoT[2])
-        solver.add_hard(toAlgo(algoI[0])==algoT[0])
-        solver.hard.append(Not(useVm(vmI[2])))
-        solver.hard.append(Not(useEnc(encI[2])))
+        solver.add_hard(toAlgo(algoI[1])==algoT_goog)
+        solver.add_hard(toAlgo(algoI[0])==algoT_pol)
+        solver.hard.append(Not(useVm(vmI[0])))
+        solver.hard.append(Not(useEnc(encI[0])))
         
         
         solver.add_soft(True, 0)
+        solver.add_soft(toVm(vmI[1])==vmT_ec2,10)
         
         solver.init_solver()
         
         print len(solver.soft)
         solver.error = 200
         solver.debug = False
+        
+        
         print "final total: %d" % solver.search()
             
         
@@ -98,7 +101,8 @@ class Test(unittest.TestCase):
         rp.vars = algoI + encI + vmI
         rp.refs = [dAlgoEnc, dAlgoVm, dEncVm]
         rp.types = [toAlgo, toEnc, toVm]
-        #rp.filters = [useAlgo, useEnc, useVm]
+        rp.filters = [useAlgo, useEnc, useVm]
+        rp.use_filters = True
         rp.eval = eval
         rp.make_graph()
         #print eval(countA)  
