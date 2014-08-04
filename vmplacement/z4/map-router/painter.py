@@ -16,12 +16,12 @@ class ResultPainter():
         self.refs = []
         self.filters = []
         self.types = []
+        self.attrs = []
         self.eval = None
         self.G = nx.Graph()
         self.use_filters = False
         
-    def make_graph(self):
-        
+    def make_graph(self): 
         for v in self.vars:
             if self._filt(v):
                 self.G.add_node(str(v))
@@ -36,7 +36,7 @@ class ResultPainter():
                     None
         
         pos=nx.spring_layout(self.G)
-        label = dict((n, str(n)+':'+self._typeOf(n)) for n in self.G.nodes()) 
+        label = dict((n, str(n)+':'+self._typeOf(n) + self._attr(n)) for n in self.G.nodes()) 
         plt.ion()
         nx.draw(self.G, pos=pos, with_lables=True, node_size=5000)
         nx.draw_networkx_labels(self.G, pos, label)
@@ -65,3 +65,15 @@ class ResultPainter():
             except:
                 None
         return ""
+    
+    def _attr(self, vstr):
+        v = next(n for n in self.vars if str(n)==vstr)
+        ret = ''
+        for a in self.attrs:
+            try:
+                attrstr = str(self.eval(a(v)))
+                if not('(' in attrstr):
+                    ret = ret + '\n' + str(a) + ':' + attrstr
+            except:
+                None
+        return ret
