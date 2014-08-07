@@ -16,13 +16,15 @@ class ResultPainter():
     def __init__(self):
         self.vars = []
         self.refs = []
+        self.multi_refs = []
         self.filters = []
         self.types = []
         self.attrs = []
         self.eval = None
-        self.G = nx.Graph()
+        self.G = nx.DiGraph()
         self.use_filters = False
-        self._colors = ['#99aaee', '#eeaa99', '#ccffdd', '#ddffcc', '#aa99ee', 'g', 'r', 'm', 'y', 'c']
+        self._colors = ['#88bbee', '#bb88ee', '#88eebb', '#bbee88', '#ee88bb', '#eebb88', '#88bbbb', '#bb8888', '#eebbee', '#bbeebb'
+                        '#ee88ee', '#88ee88', '#8888ee', 'eeee88']
         
     def make_graph(self): 
         self.G.clear()
@@ -41,6 +43,15 @@ class ResultPainter():
                         self.G.add_edge(str(v), tgt)
                 except Z3Exception:
                     None
+                    
+        for ref in self.multi_refs:
+            for v1 in using_vars:
+                for v2 in using_vars:
+                    try:
+                        if str(self.eval(ref(v1,v2)))=='True':
+                            self.G.add_edge(str(v1), str(v2))
+                    except Z3Exception:
+                        None
         pos=nx.spring_layout(self.G)
         label = dict((n, str(n)+':'+d['type'] + self._attr(n)) for n,d in self.G.nodes(data=True)) 
         plt.ion()
@@ -59,6 +70,10 @@ class ResultPainter():
         #nx.draw(self.G, pos=pos, with_lables=True, node_size=5000)
         nx.draw_networkx_labels(self.G, pos, label)
         nx.draw_networkx_edges(self.G, pos, self.G.edges())
+        
+        G2 = nx.Graph()
+        G2.add_node('shannon')
+        nx.draw_networkx_labels(G2, {'shannon':[-0., -0.1]}, {'shannon':'s:%.2f'%self._shannon()})
         plt.show(block=True)   
     
     def _filt(self, v):  
@@ -82,7 +97,8 @@ class ResultPainter():
         for t in self.types:
             try:
                 typestr = str(self.eval(t(v)))
-                return typestr
+                if not('(' in typestr):
+                    return typestr
             except:
                 None
         return ""
