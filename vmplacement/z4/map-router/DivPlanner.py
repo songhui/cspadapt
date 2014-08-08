@@ -153,6 +153,8 @@ class Test(unittest.TestCase):
         
         #perturbations
         solver.add_soft(Not(useVm(vmI[3])),30)
+        #prefer App Storage
+        #solver.add_soft(And([toStor(stor)==storT_app for stor in storI[1:]]),70)
         #solver.add_soft(toVm(vmI[1])!=toVm(vmI[2]),10)
         #solver.add_soft(toAlgo(algoI[1])!=toAlgo(algoI[3]),10)
         #solver.add_soft(dAlgoVm(algoI[1])!=dAlgoVm(algoI[2]),10)
@@ -195,12 +197,14 @@ class Test(unittest.TestCase):
         var_type = [(algoI, toAlgo), (encI, toEnc), (vmI, toVm), (storI, toStor)]
         
         for i in range(0,10):
+            shuffled = ''
             for j in range(0,10):
-                if self.shuffle(solver, var_type): break
+                shuffled = self.shuffle(solver, var_type)
+                if shuffled!='': break
             solver.init_solver()
             print solver.search()
             rp.eval = solver.model().eval
-            print rp._shannon()
+            rp.toprint = shuffled
             rp.make_graph()
         
         
@@ -217,9 +221,9 @@ class Test(unittest.TestCase):
         print (v1, v2)
         if str(solver.model().eval(type(v1)==type(v2)))=='False':
             print "no use shuffle"
-            return False
+            return ''
         solver.add_soft(type(v1)!=type(v2), 20)
-        return True
+        return "%s!=%s"%(v1,v2)
         
 
     def gen_count(self, mult_func, host, targets):

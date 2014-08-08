@@ -20,11 +20,12 @@ class ResultPainter():
         self.filters = []
         self.types = []
         self.attrs = []
+        self.toprint = ''
         self.eval = None
         self.G = nx.DiGraph()
         self.use_filters = False
-        self._colors = ['#88bbee', '#bb88ee', '#88eebb', '#bbee88', '#ee88bb', '#eebb88', '#88bbbb', '#bb8888', '#eebbee', '#bbeebb'
-                        '#ee88ee', '#88ee88', '#8888ee', 'eeee88']
+        self._colors = ['#00CC99', '#33CCFF', '#FF9999', '#00FF00', '#FF99FF', '#6699CC', '#bbee88', '#CC99FF',  '#CC9933',  '#FFFF00', '#66CC00'
+                        '#00FF99', '#66CCCC',  '#CCCC66','#FF00FF']
         
     def make_graph(self): 
         self.G.clear()
@@ -72,8 +73,8 @@ class ResultPainter():
         nx.draw_networkx_edges(self.G, pos, self.G.edges())
         
         G2 = nx.Graph()
-        G2.add_node('shannon')
-        nx.draw_networkx_labels(G2, {'shannon':[-0., -0.1]}, {'shannon':'s:%.2f'%self._shannon()})
+        G2.add_node('toprint')
+        nx.draw_networkx_labels(G2, {'toprint':[-0., -0.1]}, {'toprint':'shannon:%.2f\n%s'%(self._shannon(),self.toprint)})
         plt.show(block=True)   
     
     def _filt(self, v):  
