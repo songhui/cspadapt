@@ -129,16 +129,25 @@ class ResultPainter():
     
     def _shannon(self):
         pop = dict()
+        total = 0;
         for n, d in self.G.nodes(data = True):
             type = str(d['type'])
             if type in pop:
                 pop[type] = pop[type] + 1
             else:
                 pop[type] = 1
-        n = float(len(pop))
+            total = total + 1
+        n = float(total)
         p = [x / n for k,x in pop.items()]
         shannon = 0 - sum(pi * math.log(pi) for pi in p)
         return shannon
             
-            
-            
+    def _shannon_without_show(self):
+        self.G.clear()
+        using_vars = [v for v in self.vars if self._filt(v)]
+        for v in using_vars:
+            type = self._type_of_v(v)
+            attrs = dict()
+            attrs['type'] = type
+            self.G.add_node(str(v),attrs)         
+        return self._shannon()    

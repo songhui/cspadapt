@@ -28,6 +28,8 @@ class SoftSolver():
     def init_solver(self):
         None   
     
+    def remove_last_n_soft(self, n):
+        self.soft = self.soft[:0-n]
     
     def last_sat(self):
         return self._last_result == Z3_L_TRUE     
@@ -36,7 +38,7 @@ class SoftSolver():
         return self._last_model
     
     def print_state_time(self):
-        print 'Result: %s, Time: %.2f' % (self.last_sat(), clock())
+        print 'Result1: %s, Time: %.2f' % (self.last_sat(), clock())
         
     def search(self):
         None

@@ -136,7 +136,7 @@ class Test(unittest.TestCase):
         solver.hard.append(And([useAlgo(algo) for algo in algoI[1:]]))
         
         solver.add_soft(Implies(useLB(lbI[1]), self.gen_count(dLBAlgo, lbI[1], algoI)>3), 100)
-        solver.add_soft(Not(useLB(lbI[1])), 100)
+        solver.add_hard(Not(useLB(lbI[1])))
         #solver.add_hard(And([cacheAlgo(algoI[0]), cacheAlgo(algoI[1]),cacheAlgo(algoI[2]),cacheAlgo(algoI[3])]))
         for a in algoI:
             solver.add_soft(cacheAlgo(a), 12)
@@ -196,22 +196,83 @@ class Test(unittest.TestCase):
         
         var_type = [(algoI, toAlgo), (encI, toEnc), (vmI, toVm), (storI, toStor)]
         
-        for i in range(0,10):
-            shuffled = ''
-            for j in range(0,10):
-                shuffled = self.shuffle(solver, var_type)
-                if shuffled!='': break
-            solver.init_solver()
-            print solver.search()
-            rp.eval = solver.model().eval
-            rp.toprint = shuffled
-            rp.make_graph()
+        
+        #simulated annealing
+        print solver.soft
+        max_eval = self.sa_search(solver, var_type, rp)
+        
+        rp.eval = max_eval
+        #print solver.soft
+        print "Shannon_without_show %f" % rp._shannon_without_show()
+        rp.make_graph()
+        
+        
+# original code for manual searching        
+#         for i in range(0,10):
+#             shuffled = ''
+#             for j in range(0,10):
+#                 shuffled = self.shuffle(solver, var_type)
+#                 if shuffled!='': break
+#             solver.init_solver()
+#             print solver.search()
+#             rp.eval = solver.model().eval
+#             rp.toprint = shuffled
+#             rp.make_graph()
         
         
         #print eval(countA)  
         print rp._shannon()
  
- 
+    def sa_search(self, solver, target, rp):
+        max_diff_size = 7.0
+        diff = []
+        shannon = 0;
+        max_shannon = 0;
+        max_diff = []
+        max_eval = None
+        for i in range(0,80):
+            new_diff = list(diff)
+            if random.random() > len(diff)/max_diff_size:
+                new_diff.append(self.generate_perturbation(solver, target))
+            else:
+                del new_diff[randint(0,len(diff)-1)]
+                
+            temp = list(solver.soft)
+            for x in new_diff:
+                solver.add_soft(x, 20)
+            solver.init_solver()
+            solver.search()
+           
+            solver.soft = temp
+            
+            print '!!!After: %d' % len(solver.soft)
+            rp.eval = solver.model().eval
+            new_shannon = rp._shannon_without_show()   
+            print '%s: %s' % (new_shannon, new_diff)
+            if new_shannon > max_shannon:
+                max_shannon = new_shannon
+                max_diff = list(new_diff)
+                max_eval = rp.eval
+            if (new_shannon > shannon) or (random.random()>0.95 ** i):
+                diff = new_diff
+                shannon = new_shannon
+
+        print 'max: %s, last: %s' % (max_shannon, shannon)                           
+        return max_eval            
+            
+            
+            
+    def generate_perturbation(self, solver, target):
+        for i in range(0,20):
+            (vars, type) = choice(target)
+            i1 = randint(1,len(vars)-2)
+            i2 = randint(i1+1, len(vars)-1)
+            v1 = vars[i1]
+            v2 = vars[i2] 
+            if not(str(solver.model().eval(type(v1)==type(v2)))=='False'):
+                return type(v1)!=type(v2)
+        
+    
     def shuffle(self, solver, target):
         (vars, type) = choice(target)
         i1 = randint(1,len(vars)-2)
