@@ -67,8 +67,7 @@ class Test(unittest.TestCase):
         iiVm = Const('iiVm', VmI)
         iStor = Const('iStore', StorI)
         iLB = Const('iLB', LBI)
-        
-        
+                
         #Now started defining constraints. But we need a solver first
         solver = SoftSolverOpt()
         
@@ -199,15 +198,17 @@ class Test(unittest.TestCase):
         
         #simulated annealing
         print solver.soft
-        max_eval = self.sa_search(solver, var_type, rp)
         
+        self.shannon_record = []
+        max_eval = self.sa_search(solver, var_type, rp)
+         
         rp.eval = max_eval
         #print solver.soft
         print "Shannon_without_show %f" % rp._shannon_without_show()
         rp.make_graph()
-        
-        
-# original code for manual searching        
+         
+         
+#         original code for manual searching        
 #         for i in range(0,10):
 #             shuffled = ''
 #             for j in range(0,10):
@@ -245,7 +246,6 @@ class Test(unittest.TestCase):
            
             solver.soft = temp
             
-            print '!!!After: %d' % len(solver.soft)
             rp.eval = solver.model().eval
             new_shannon = rp._shannon_without_show()   
             print '%s: %s' % (new_shannon, new_diff)
@@ -253,10 +253,14 @@ class Test(unittest.TestCase):
                 max_shannon = new_shannon
                 max_diff = list(new_diff)
                 max_eval = rp.eval
-            if (new_shannon > shannon) or (random.random()>0.95 ** i):
+                
+            if (new_shannon > shannon) or (random.random() < 0.92 ** i):
                 diff = new_diff
                 shannon = new_shannon
-
+            
+            self.shannon_record.append(shannon)
+        
+        print self.shannon_record
         print 'max: %s, last: %s' % (max_shannon, shannon)                           
         return max_eval            
             
