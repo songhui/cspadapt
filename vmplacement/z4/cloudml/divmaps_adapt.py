@@ -38,23 +38,30 @@ solver.add_hard(ForAll([icomp], quick.only_alive_types(icomp, [GhPul, GhTraf, En
 solver.add_hard(ForAll([icomp], quick.only_alive_types(icomp, [EncTrafOnly, EncVersatile, EC2, Azure], dGhEnc(icomp)==nullinst)))
 solver.add_hard(ForAll([icomp], quick.only_alive_types(icomp, [EC2, Azure], host(icomp)==nullinst)))
 
+#solver.add_hard(ForAll([icomp], (typeof(icomp)==NullType)==(not alive(icomp))))
+
 # for i in comps[1:4]:
 #     solver.add_soft(And(alive(i), typeof(i)==GhPul),20)    
 # for i in comps[4:6]:
 #     solver.add_soft(And(alive(i), Or(typeof(i)==EncTrafOnly, typeof(i)==EncVersatile)), 15)    
 # for i in comps[6:8]:
 #     solver.add_soft(And(alive(i), Or(typeof(i)==EC2, typeof(i)==Azure)), 18)    
-for i in comps[1+numOfInst : ]:
-    solver.add_soft(alive(i) == False, 10)
+
+for i in comps[1:6] :
+    solver.add_hard(quick.alter_types(i, [GhPul, GhTraf]))  
+
+for i in comps[6:7] :
+    solver.add_hard(quick.alter_types(i, [EncTrafOnly, EncVersatile]))
+
+for i in comps[7:8]:
+    solver.add_hard(quick.alter_types(i, [Azure, EC2]))
     
 
-for i in comps[1:4]:
-    solver.add_hard(And(alive(i), typeof(i)==GhPul))    
-for i in comps[4:6]:
-    solver.add_hard(And(alive(i), Or(typeof(i)==EncTrafOnly, typeof(i)==EncVersatile)))    
-for i in comps[6:8]:
-    solver.add_hard(And(alive(i), Or(typeof(i)==EC2, typeof(i)==Azure)))    
-
+for i in comps[1:6] :
+    solver.add_soft(alive(i), 30)
+    
+for i in comps[8:12] :
+    solver.add_soft(Not(alive(i)), 30)
     
 solver.init_solver()
         
