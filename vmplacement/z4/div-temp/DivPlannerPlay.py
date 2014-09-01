@@ -6,6 +6,7 @@ Created on 12 Nov 2013
 
 from z3 import *
 from softz3_opt import *
+from softz3_msopt import *
 from softz3_diagnose import *
 from random import randint
 from time import clock
@@ -57,8 +58,9 @@ class Test(unittest.TestCase):
         ict = Const('ct', TypeC)
         
         
-        solver = SoftSolverOpt()
+        solver = SoftSolverMsOpt()
         #solver = SoftSolverDiagnose()
+        #solver = SoftSolverOpt()
 
         #never deploy to the same destination
         solver.hard.append(ForAll([ia,iaa], Implies(dAB(ia)==dAB(iaa), ia==iaa)))
@@ -96,17 +98,21 @@ class Test(unittest.TestCase):
         solver.hard.append(And(memC(c[0])==10, memC(c[1])==10, memC(c[2])==10))
 
         for x in a:
-            if randint(0,9) < 1 :
+            if randint(0,9) < 9 :
                 solver.add_soft(toA(x)==A[randint(1,9)], randint(20,30))
         #solver.additional_hard([And(toA(a[1])==A[1], toA(a[2])==A[1], toA(a[3])==A[1])])
         
         solver.init_solver()
         
         print len(solver.soft)
-        solver.error = 200
-        solver.debug = False
-        print "final total: %d" % solver.search()
-            
+        #only for softz3_opt
+#        solver.error = 10
+#        solver.debug = False
+#        print "final total: %d" % solver.search()
+        
+        #These lines are for softz3_ms_opt
+        solver.search()
+        print solver.last_sat()    
         
         
         eval = solver.model().eval

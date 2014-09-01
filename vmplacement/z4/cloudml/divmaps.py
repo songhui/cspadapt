@@ -1,4 +1,5 @@
 from softz3_opt import *
+from softz3_msopt import *
 from z3 import *
 from z3util import *
 from painter import *
@@ -25,7 +26,8 @@ dGhEnc = Function('dGhEnc', CompInst, CompInst)
 icomp = Const('icomp', CompInst)
 iicomp = Const('iicomp', CompInst)
 
-solver = SoftSolverOpt()
+#solver = SoftSolverOpt()
+solver = SoftSolverMsOpt()
 quick = QuickExpr(alive, typeof, nullinst, NullType)
 
 solver.add_hard(typeof(nullinst) == NullType)
@@ -59,11 +61,12 @@ for i in comps[6:8]:
 solver.init_solver()
         
 print len(solver.soft)
-solver.error = 20
-solver.debug = False
+#solver.error = 20
+#solver.debug = False
 
 before = clock()
-print "final total: %d" % solver.search() 
+#print "final total: %d" % solver.search() 
+solver.search()
 print clock() - before
 
 #print solver.model()
