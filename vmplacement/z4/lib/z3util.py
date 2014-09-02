@@ -19,3 +19,6 @@ class QuickExpr:
     
     def alter_types(self, inst, types):
         return Or([self.typeof(inst)==type for type in types])
+    
+    def count(self, insts, target, relation):
+        return Sum([If(relation(i)==target, 1, 0) for i in insts])

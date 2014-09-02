@@ -9,7 +9,7 @@ numOfInst = 7
 numOfStub = 4
 
 nameInst = ['inst%d'%(i) for i in range(1,numOfInst+1)]
-nameStub = ['stub%d'%(i) for i in range(numOfInst, numOfInst + numOfStub)]
+nameStub = ['stub%d'%(i) for i in range(numOfInst+1, numOfInst + numOfStub+1)]
 
 CompType, (NullType, GhPul, GhTraf, EncTrafOnly, EncVersatile, GoogMap, EC2, Azure) = EnumSort('CompType', ['NullType', 'GhPul', 'GhTraf', 'EncTrafOnly', 'EncVersatile', 'GoogMap', 'EC2', 'Azure'])
 CompInst, comps = EnumSort('CompInst', ['null'] + nameInst + nameStub)
@@ -22,6 +22,8 @@ typeof = Function('typeof', CompInst, CompType)
 host = Function('host', CompInst, CompInst)
 
 dGhEnc = Function('dGhEnc', CompInst, CompInst)
+
+mem = Function('mem', CompInst, IntSort())
 
 #icomp = Const('icomp', CompInst)
 #iicomp = Const('iicomp', CompInst)
@@ -46,6 +48,8 @@ for icomp in comps[1:] :
     solver.add_hard(quick.only_alive_types(icomp, [GhPul, GhTraf, EncTrafOnly, EncVersatile], And(alive(host(icomp)), Or([typeof(host(icomp))==t for t in [EC2, Azure]]))))
     solver.add_hard(quick.only_alive_types(icomp, [EncTrafOnly, EncVersatile, EC2, Azure], dGhEnc(icomp)==nullinst))
     solver.add_hard(quick.only_alive_types(icomp, [EC2, Azure], host(icomp)==nullinst))
+for icomp in comps[7:] :
+    solver.add_hard(quick.only_alive_types(icomp, [EC2, Azure], quick.count(comps[1:], icomp, host) <= mem(icomp)))
 #solver.add_hard(ForAll([icomp], (typeof(icomp)==NullType)==(not alive(icomp))))
 
 # for i in comps[1:4]:
@@ -82,6 +86,11 @@ for i in comps[1:7]:
     solver.add_soft(host(i)==comps[7], 15)
     
 solver.add_soft(typeof(comps[1])!=typeof(comps[2]), 500)
+
+#limited capacity of vms
+solver.add_soft(And([quick.only_alive_types(i, [Azure], mem(i)==2) for i in comps[6:]]), 600)
+solver.add_soft(And([quick.only_alive_types(i, [EC2], mem(i)==3) for i in comps[6:]]), 600)
+
     
 solver.init_solver()
         
