@@ -11,16 +11,7 @@ numOfStub = 4
 nameInst = ['inst%d'%(i) for i in range(1,numOfInst+1)]
 nameStub = ['stub%d'%(i) for i in range(numOfInst+1, numOfInst + numOfStub+1)]
 
-CompType, (NullType, GhUni, GhStatic, GhDriving, GhWorkOut, GoogMap, 
-           EncBasic, EncAllService, EncPollution, EncTraffic, EncNoise,
-           StoreApp, StorePltf, StorePltf2, 
-           EC2, EC2Free, Azure) = \
-    EnumSort('CompType', [
-           'NullType', 'GhUni', 'GhStatic', 'GhDriving', 'GhWorkOut', 'GoogMap', 
-           'EncBasic', 'EncAllService', 'EncPollution', 'EncTraffic', 'EncNoise',
-           'StoreApp', 'StorePltf', 'StorePltf2', 
-           'EC2', 'EC2Free', 'Azure'
-        ])
+CompType, (NullType, GhPul, GhTraf, EncTrafOnly, EncVersatile, GoogMap, EC2, Azure) = EnumSort('CompType', ['NullType', 'GhPul', 'GhTraf', 'EncTrafOnly', 'EncVersatile', 'GoogMap', 'EC2', 'Azure'])
 CompInst, comps = EnumSort('CompInst', ['null'] + nameInst + nameStub)
 
 nullinst = comps[0]
