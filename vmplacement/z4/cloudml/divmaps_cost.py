@@ -42,6 +42,8 @@ solver.add_hard(alive(nullinst) == False)
 #solver.add_hard(ForAll([icomp], quick.only_alive_types(icomp, [EC2, Azure], host(icomp)==nullinst)))
 
 # get rid of ForAll?
+
+
 for icomp in comps[1:] :
     solver.add_hard(quick.only_alive_type(icomp, GhTraf, And(alive(dGhEnc(icomp)), Or([typeof(dGhEnc(icomp))==t for t in [ EncTrafOnly]] ))))
     solver.add_hard(quick.only_alive_type(icomp, GhPul, And(alive(dGhEnc(icomp)), typeof(dGhEnc(icomp))==EncVersatile)))

@@ -5,11 +5,15 @@ from z3util import *
 from painter import *
 from time import clock
 
-numOfInst = 7
-numOfStub = 4
+numGh = 15
+numEnc = 15
+numStr = 10
+numVm = 6
 
-nameInst = ['inst%d'%(i) for i in range(1,numOfInst+1)]
-nameStub = ['stub%d'%(i) for i in range(numOfInst+1, numOfInst + numOfStub+1)]
+nameGh = ['gh%d'%(i) for i in range(1,numGh+1)]
+nameEnc = ['enc%d'%(i) for i in range(1, numEnc+1)]
+nameStr = ['str%d'%(i) for i in range(1, numStr+1)]
+nameVm = ['vm%d'%(i) for i in range(1, numVm+1)]
 
 CompType, (NullType, GhUni, GhStatic, GhDriving, GhWorkOut, GoogMap, 
            EncBasic, EncAllService, EncPollution, EncTraffic, EncNoise,
@@ -21,17 +25,25 @@ CompType, (NullType, GhUni, GhStatic, GhDriving, GhWorkOut, GoogMap,
            'StoreApp', 'StorePltf', 'StorePltf2', 
            'EC2', 'EC2Free', 'Azure'
         ])
-CompInst, comps = EnumSort('CompInst', ['null'] + nameInst + nameStub)
+    
+CompInst, comps = EnumSort('CompInst', ['null'] + nameGh + nameEnc + nameStr + nameVM)
 
-nullinst = comps[0]
+curr = 0
+nullinst = comps[curr]
+curr += 1
+instGh = comps[curr:curr + numGh]
+curr += numGh
+instEnc = comps[curr:curr+numEnc]
+curr += numEnc
+instStr = comps[curr:curr+numStr]
+curr += numStr
+instVm = comps[curr:curr+numVm]
 
 alive = Function('alive', CompInst, BoolSort())
 typeof = Function('typeof', CompInst, CompType)
 
 host = Function('host', CompInst, CompInst)
-
 dGhEnc = Function('dGhEnc', CompInst, CompInst)
-
 mem = Function('mem', CompInst, IntSort())
 
 #icomp = Const('icomp', CompInst)
@@ -51,6 +63,17 @@ solver.add_hard(alive(nullinst) == False)
 #solver.add_hard(ForAll([icomp], quick.only_alive_types(icomp, [EC2, Azure], host(icomp)==nullinst)))
 
 # get rid of ForAll?
+
+for icomp in instGh:
+    solver.add_hard(quick.type_dep(icomp, dGhEnc, GhUni, [EncBasic, EncAllService]))
+    solver.add_hard(quick.type_dep(icomp, dGhEnc, GhStatic, [EncAllService]))
+    solver.add_hard(quick.type_dep(icomp, dGhEnc, GhDriving, [EncAllService, EncPollution, EncTraffic, EncNoise]))
+    solver.add_hard(quick.type_dep(icomp, dGhEnc, GhWorkOut,[EncAllService, EncPollution, EncNoise]))
+   
+for icomp in instEnc + instStr + instVm:
+    solver.add_hard(dGhEnc(icomp)==nullinst) 
+    
+
 for icomp in comps[1:] :
     solver.add_hard(quick.only_alive_type(icomp, GhTraf, And(alive(dGhEnc(icomp)), Or([typeof(dGhEnc(icomp))==t for t in [ EncTrafOnly]] ))))
     solver.add_hard(quick.only_alive_type(icomp, GhPul, And(alive(dGhEnc(icomp)), typeof(dGhEnc(icomp))==EncVersatile)))
