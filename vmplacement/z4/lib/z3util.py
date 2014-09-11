@@ -26,3 +26,14 @@ class QuickExpr:
     def type_dep(self, inst, reference, sourceType, targetTypes):
         return Implies(And(self.alive(inst), self.typeof(inst)==sourceType), 
                        Or([self.typeof(reference(inst))==t for t in targetTypes]))
+        
+    def ref_to_null(self, inst, reference, sourceType):
+        return Implies(self.typeof(inst)==sourceType, reference(inst)==self.nullinst)
+    
+    def ref_to_null_multiple(self, inst, reference, sourceTypes):
+        return Implies(Or([self.typeof(inst)==t for t in sourceTypes]),
+                       reference(inst)==self.nullinst)
+        
+    def exist_alive_typed(self, instances, types):
+        return Or([And(self.alive(i), Or([self.typeof(i)==t for t in types])) for i in instances])
+    

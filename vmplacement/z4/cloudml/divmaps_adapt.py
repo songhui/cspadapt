@@ -44,7 +44,15 @@ typeof = Function('typeof', CompInst, CompType)
 
 host = Function('host', CompInst, CompInst)
 dGhEnc = Function('dGhEnc', CompInst, CompInst)
+dEncStr = Function('dEncStr', CompInst, CompInst)
 mem = Function('mem', CompInst, IntSort())
+
+
+commuter = Const('commuter', BoolSort())
+pollution = Const('pollution', BoolSort())
+traffic = Const('traffic', BoolSort())
+fast = Const('fast', BoolSort())
+cheap = Const('cheap', BoolSort())
 
 #icomp = Const('icomp', CompInst)
 #iicomp = Const('iicomp', CompInst)
@@ -69,19 +77,31 @@ for icomp in instGh:
     solver.add_hard(quick.type_dep(icomp, dGhEnc, GhStatic, [EncAllService]))
     solver.add_hard(quick.type_dep(icomp, dGhEnc, GhDriving, [EncAllService, EncPollution, EncTraffic, EncNoise]))
     solver.add_hard(quick.type_dep(icomp, dGhEnc, GhWorkOut,[EncAllService, EncPollution, EncNoise]))
-   
+    solver.add_hard(quick.ref_to_null(icomp, dGhEnc, GoogMap))
+    solver.add_hard(Implies(And(alive(icomp), alive(dGhEnc(icomp)), alive(host(icomp)), alive(host(dGhEnc(icomp)))), 
+                            host(icomp)==host(dGhEnc(icomp))))
+    
+    
+    
 for icomp in instEnc + instStr + instVm:
     solver.add_hard(dGhEnc(icomp)==nullinst) 
     
+for icomp in instEnc:
+    solver.add_hard(quick.type_dep(icomp, dEncStr, EncAllService, [StoreApp]))
+    
+for icomp in instGh + instStr + instVm:
+    solver.add_hard(dGhEnc(icomp)==nullinst)
+    
+for icomp in instGh + instEnc + instStr:
+    solver.add_hard(quick.ref_to_null_multiple(icomp, host, [GoogMap, StorePltf, StorePltf2]))
+    
+for icomp in instStr:
+    solver.add_hard(quick.type_dep(icomp, host, StoreApp, [EC2]))
+    
+theone = Const('theone', CompInst)
+solver.add_hard(Or([And(theone==i, alive(theone)) for i in instGh]))
 
-for icomp in comps[1:] :
-    solver.add_hard(quick.only_alive_type(icomp, GhTraf, And(alive(dGhEnc(icomp)), Or([typeof(dGhEnc(icomp))==t for t in [ EncTrafOnly]] ))))
-    solver.add_hard(quick.only_alive_type(icomp, GhPul, And(alive(dGhEnc(icomp)), typeof(dGhEnc(icomp))==EncVersatile)))
-    solver.add_hard(quick.only_alive_types(icomp, [GhPul, GhTraf, EncTrafOnly, EncVersatile], And(alive(host(icomp)), Or([typeof(host(icomp))==t for t in [EC2, Azure]]))))
-    solver.add_hard(quick.only_alive_types(icomp, [EncTrafOnly, EncVersatile, EC2, Azure], dGhEnc(icomp)==nullinst))
-    solver.add_hard(quick.only_alive_types(icomp, [EC2, Azure], host(icomp)==nullinst))
-for icomp in comps[7:] :
-    solver.add_hard(quick.only_alive_types(icomp, [EC2, Azure], quick.count(comps[1:], icomp, host) <= mem(icomp)))
+
 #solver.add_hard(ForAll([icomp], (typeof(icomp)==NullType)==(not alive(icomp))))
 
 # for i in comps[1:4]:
