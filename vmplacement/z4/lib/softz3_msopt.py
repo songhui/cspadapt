@@ -30,6 +30,10 @@ class SoftSolverMsOpt(SoftSolver):
       
 
     def search(self):
+        self.solver.set('engine', 'symba')
+        self.solver.set('maxsat_engine', 'sls')
+        self.solver.set('enable_sat', True)
+        self.solver.set('enable_sls', True)
         self._last_result = self.solver.check().r
         self._last_model = self.solver.model()
         

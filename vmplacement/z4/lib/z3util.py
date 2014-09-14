@@ -18,15 +18,28 @@ class QuickExpr:
         return Implies(And(self.alive(inst), Or([self.typeof(inst)==t for t in types])), expr)
     
     def alter_types(self, inst, types):
-        return Or([self.typeof(inst)==type for type in types])
+        return Implies(self.alive(inst), Or([self.typeof(inst)==type for type in types]))
+    
+    def cartesian_not_equal(self, instances, types):
+        return And([self.typeof(x)!=y for x in instances for y in types])
     
     def count(self, insts, target, relation):
         return Sum([If(relation(i)==target, 1, 0) for i in insts])
     
     def type_dep(self, inst, reference, sourceType, targetTypes):
         return Implies(And(self.alive(inst), self.typeof(inst)==sourceType), 
-                       Or([self.typeof(reference(inst))==t for t in targetTypes]))
+                       And(
+                           self.alive(reference(inst)),
+                           Or([self.typeof(reference(inst))==t for t in targetTypes])
+                       ))
         
+    def type_dep_multiple(self, inst, reference, sourceTypes, targetTypes):
+        return Implies(And(self.alive(inst), Or([self.typeof(inst)==t for t in sourceTypes])), 
+                       And(
+                           self.alive(reference(inst)),
+                           Or([self.typeof(reference(inst))==t for t in targetTypes])
+                       )) 
+           
     def ref_to_null(self, inst, reference, sourceType):
         return Implies(self.typeof(inst)==sourceType, reference(inst)==self.nullinst)
     

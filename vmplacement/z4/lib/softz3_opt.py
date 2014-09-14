@@ -18,6 +18,7 @@ class SoftSolverOpt(SoftSolver):
         SoftSolver.__init__(self)
         self._total = None
         self.error = 50
+        self.debug = False
     
     def init_solver(self):
         

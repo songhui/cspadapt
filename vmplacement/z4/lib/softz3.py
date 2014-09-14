@@ -41,4 +41,9 @@ class SoftSolver():
     def search(self):
         None
         
+    def get_broken(self):
+        eval = self.model().eval
+        return [(c, w) for (c,w) in self.soft if str(eval(c))=='False']
     
+    def get_broken_weight(self):
+        return sum(w for (c,w) in self.get_broken())

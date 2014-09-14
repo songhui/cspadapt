@@ -24,8 +24,10 @@ class ResultPainter():
         self.eval = None
         self.G = nx.DiGraph()
         self.use_filters = False
-        self._colors = ['#00CC99', '#33CCFF', '#FF9999', '#00FF00', '#FF99FF', '#6699CC', '#bbee88', '#CC99FF',  '#CC9933',  '#FFFF00', '#66CC00'
-                        '#00FF99', '#66CCCC',  '#CCCC66','#FF00FF']
+        self._colors = ['#00CC99', '#33CCFF', '#FF9999', '#00FF00', '#FF99FF', 
+                        '#6699CC', '#bbee88', '#CC99FF',  '#CC9933',  '#FFFF00', '#66CC00',
+                        '#00FF99', '#66CCCC',  '#CCCC66','#FF00FF', '#22FFEE', '#AACCAA',
+                        '#44EE99', '#EEEE33', '#7711BB', '#5599CC']
         
     def make_graph(self): 
         self.G.clear()
@@ -66,7 +68,8 @@ class ResultPainter():
                 node_type_dict[t] = [n]
         ci = 0
         for t, ns in node_type_dict.items():
-            nx.draw_networkx_nodes(self.G, pos, nodelist= ns, node_size = 5000, node_color = self._colors[ci])
+            #print ">>>>%s" % self._colors[ci%len(self._colors)]
+            nx.draw_networkx_nodes(self.G, pos, nodelist= ns, node_size = 5000, node_color = self._colors[ci%len(self._colors)])
             ci = ci+1
         #nx.draw(self.G, pos=pos, with_lables=True, node_size=5000)
         nx.draw_networkx_labels(self.G, pos, label)
