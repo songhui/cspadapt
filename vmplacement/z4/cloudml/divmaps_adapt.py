@@ -174,38 +174,48 @@ generated_evals = []
 """
 Wake some comps up
 """
-for i in range(0,3):
-    activate(solver, eval, comps, alive, 3)
+for i in range(0,10):
+    activate(solver, eval, comps, alive, 2)
     eval = solve(solver)
     #display(rp, eval)
     rp.eval = eval
     generated_evals.append( (eval, rp._shannon_without_show()) )
 
+results = []
 eval = None
 for eval, shannon in generated_evals:
-    del solver.soft[:]
-    for i in comps[1:]:
-        if str(eval(alive(i)))=='False':
-            solver.add_soft(Not(alive(i)), 10)
-        else:
-            solver.add_soft(alive(i), 4)
-            solver.add_soft(typeof(i)==eval(typeof(i)), 10)
-            for r in refs:
-                if str(eval(r(i)))!='null':
-                    solver.add_soft(r(i)==eval(r(i)), 10)
-           
-    solver.add_soft(traffic, 1000)
-
-    neval = solve(solver)
-    #print solver.solver.sexpr()
-    print "----"
-    print shannon
-    print neval(typeof(theone))
-    print solver.get_broken()
-    print solver.get_broken_weight()
-    display(rp, neval)
+    phase_res = []
+    results.append(phase_res)
+    for x in range(0,10):
+        del solver.soft[:]
+        for i in comps[1:]:
+            if str(eval(alive(i)))=='False':
+                solver.add_soft(Not(alive(i)), 10)
+            else:
+                solver.add_soft(alive(i), 4)
+                solver.add_soft(typeof(i)==eval(typeof(i)), 10)
+                for r in refs:
+                    if str(eval(r(i)))!='null':
+                        solver.add_soft(r(i)==eval(r(i)), 10)
+        n=len(context)       
+        solver.add_soft(context[x%n], 200)
+        if x > n:
+            solver.add_soft(context[(x*17)%n], 200)
+        neval = solve(solver)
+        #print solver.solver.sexpr()
+        print "----"
+        print shannon
+        print neval(typeof(theone))
+        print solver.get_broken()
+        #print solver.get_broken_weight()
+        phase_res.append(solver.get_broken_weight())
+        
+        #display(rp, neval)
     
+for i, r in enumerate(results):
+    print "shannon: %f, cost: %d" % (generated_evals[i][1], sum(r))
     
+        
 
 """
 ?
