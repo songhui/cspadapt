@@ -13,11 +13,11 @@ for i in instGh[:-1]:
 for i in comps[numGh:]:
     solver.add_soft(Not(alive(i)), 2)
 
-eval = solve(solver)
-display(rp, eval)
+topology = solve(solver)
+display(rp, topology)
     
 for i in range(0,100):
-    start_over_div(eval)
+    start_over_div(topology)
     for j in range(0,100):
         s = raw_input('constraint, weight>>')
         if s == 'quit' or s == 'q':
@@ -30,6 +30,6 @@ for i in range(0,100):
         weight = int(conswei[1].strip())
         solver.add_soft(cst,weight)
     
-    eval = solve(solver)
+    topology = solve(solver)
     print solver.get_broken()
-    display(rp, eval)
+    display(rp, topology)

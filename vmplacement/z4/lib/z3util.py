@@ -26,6 +26,9 @@ class QuickExpr:
     def count(self, insts, target, relation):
         return Sum([If(relation(i)==target, 1, 0) for i in insts])
     
+    def count_sum(self, insts, target, relation, attr):
+        return Sum([If(relation(i)==target, attr(i), 0) for i in insts])
+    
     def type_dep(self, inst, reference, sourceType, targetTypes):
         return Implies(And(self.alive(inst), self.typeof(inst)==sourceType), 
                        And(

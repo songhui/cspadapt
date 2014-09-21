@@ -6,45 +6,72 @@ from painter import *
 from time import clock
 from summer_constraint import *
 
-topology = solve(solver)
+
+context_group=[
+               [traffic],
+               [cheap],
+               [driving, cheap],
+               [driving, pollution, private],
+               [traffic, secure],
+               [pollution, private, fast, cheap]
+            ]
+
 #display(rp, topology)
 
 generated_topologys = []
-"""
-Wake some comps up
-"""
-for i in range(0,10):
-    activate(solver, topology, comps, alive, 2)
+
+for xxx in range(0,1):
+    del solver.soft[:]
+    for i in comps[numGh+1:]:
+        solver.add_soft(Not(alive(i)), 1)
+    for i in instGh:
+        solver.add_soft(alive(i),1)
     topology = solve(solver)
     #display(rp, topology)
-    rp.eval = topology
-    generated_topologys.append( (topology, rp._shannon_without_show()) )
+    '''
+        awake comps with default types
+    '''
+    defaults = [(instGh, GhDriving), (instEnc, EncPollution), (instStr, StorePltf), (instVm, EC2)]
+        
+    for i in range(0, 10):
+        start_over_div(topology)
+        for i in range(0,3):
+            x = choice(comps[1:])
+            for (inst, type) in defaults:
+                if x in inst:
+                    solver.add_soft(typeof(x)==type, 10)
+        topology = solve(solver)
+        (total, shannon) = rp._shannon_without_show(topology)
+        print (total, shannon)
+        generated_topologys.append((topology, total, shannon))
+        
+
 
 results = []
 topology = None
-for topology, shannon in generated_topologys:
+curr = 1
+for topology, total, shannon in generated_topologys:
+    print '\n\n================'
+    print '%d of %d topology' % (curr, len(generated_topologys))
+    curr = curr+1
     phase_res = []
     results.append(phase_res)
-    for x in range(0,10):
+    for ctx in context_group:
         del solver.soft[:]
         for i in comps[1:]:
             if str(topology(alive(i)))=='False':
-                solver.add_soft(Not(alive(i)), 10)
+                solver.add_soft(Not(alive(i)), 5)
             else:
                 solver.add_soft(alive(i), 4)
-                solver.add_soft(typeof(i)==topology(typeof(i)), 10)
+                solver.add_soft(typeof(i)==topology(typeof(i)), 8)
                 for r in refs:
                     if str(topology(r(i)))!='null':
-                        solver.add_soft(r(i)==topology(r(i)), 10)
-        n=len(context)       
-        solver.add_soft(context[x%n], 200)
-        if x > n:
-            solver.add_soft(context[(x*17)%n], 200)
+                        solver.add_soft(r(i)==topology(r(i)), 2)
+        for x in ctx:
+            solver.add_soft(x, 30)
         ntopology = solve(solver)
         #print solver.solver.sexpr()
-        print "----"
-        print shannon
-        print ntopology(typeof(theone))
+        print "%s, %s" %(shannon, ntopology(typeof(theone)))
         print solver.get_broken()
         #print solver.get_broken_weight()
         phase_res.append(solver.get_broken_weight())
@@ -52,7 +79,7 @@ for topology, shannon in generated_topologys:
         #display(rp, ntopology)
     
 for i, r in enumerate(results):
-    print "shannon: %f, cost: %d" % (generated_topologys[i][1], sum(r))
+    print "%d,\t %.4f,\t %d" % (generated_topologys[i][1], generated_topologys[i][2], sum(r))
     
         
 

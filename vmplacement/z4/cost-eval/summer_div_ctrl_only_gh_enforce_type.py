@@ -14,16 +14,16 @@ for i in instGh[:-1]:
 for i in comps[numGh:]:
     solver.add_soft(Not(alive(i)), 2)
 
-eval = solve(solver)
-display(rp, eval)
+topology = solve(solver)
+display(rp, topology)
     
 for i in range(0,10):
-    start_over_div(eval)
+    start_over_div(topology)
     for j in range(0,2):
         inst = choice(instGh)
         type = choice(ghtypes)
         solver.add_soft(typeof(inst)==type, 40)
-    eval = solve(solver)
+    topology = solve(solver)
     print solver.get_broken()
-    display(rp, eval)
+    display(rp, topology)
     

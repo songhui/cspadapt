@@ -5,6 +5,7 @@ from z3util import *
 from painter import *
 from time import clock
 from summer_func import *
+from random import choice
 
 numGh = 10
 numEnc = 10
@@ -112,6 +113,10 @@ for icomp in instGh + instEnc + instStr:
     solver.add_hard(quick.type_dep_multiple(icomp, host, 
                                             [GhDriving, GhStatic, GhUni, GhWorkOut, EncAllService, EncBasic, EncNoise, EncPollution, EncTraffic, StoreApp], 
                                             [EC2, EC2Free, Azure]))
+    solver.add_hard(mem(icomp)==0)
+    
+for icomp in instVm:
+    solver.add_hard(host(icomp)==nullinst)
     
 for icomp in instStr:
     solver.add_hard(quick.alter_types(icomp, [StoreApp, StorePltf, StorePltf2]))
@@ -119,14 +124,17 @@ for icomp in instStr:
     
 for icomp in instVm:
     solver.add_hard(quick.alter_types(icomp, [EC2, EC2Free, Azure]))
-
+    solver.add_hard(quick.count(instGh+instEnc+instStr, icomp, host)<=mem(icomp))
+    solver.add_hard(Implies(typeof(icomp)==EC2, mem(icomp)==4))
+    solver.add_hard(Implies(typeof(icomp)==EC2Free, mem(icomp)==2))
+    solver.add_hard(Implies(typeof(icomp)==Azure, mem(icomp)==4))
     
     
 theone = Const('theone', CompInst)
 solver.add_hard(Or([And(theone==i, alive(theone)) for i in instGh]))
 
 #Context
-commuter = Const('commuter', BoolSort())
+driving = Const('driving', BoolSort())
 pollution = Const('pollution', BoolSort())
 traffic = Const('traffic', BoolSort())
 fast = Const('fast', BoolSort())
@@ -134,9 +142,10 @@ cheap = Const('cheap', BoolSort())
 private = Const('private', BoolSort())
 secure = Const('secure', BoolSort())
 
-context = [commuter, pollution, traffic, fast, cheap, private, secure]
 
-solver.add_hard(Implies(commuter, typeof(theone)==GhDriving))
+context = [driving, pollution, traffic, fast, cheap, private, secure]
+
+solver.add_hard(Implies(driving, typeof(theone)==GhDriving))
 solver.add_hard(Implies(pollution, typeof(dGhEnc(theone))==EncPollution))
 solver.add_hard(Implies(traffic, 
                         Or([typeof(dGhEnc(theone))==t 
@@ -167,30 +176,40 @@ for i in comps:
 #functions
 
 '''
-convert the current eval into soft constraints, which means 
+convert the current topology into soft constraints, which means 
 starting from the configuration encoded in eval
 '''
-def start_over_div(eval):
+def start_over_div(topology):
     del solver.soft[:]
     for i in comps[1:]:
-        if str(eval(alive(i)))=='False':
+        if str(topology(alive(i)))=='False':
             solver.add_soft(Not(alive(i)), 1)
         else:
             solver.add_soft(alive(i), 10)
-            solver.add_soft(typeof(i)==eval(typeof(i)), 1)
+            solver.add_soft(typeof(i)==topology(typeof(i)), 1)
             for r in refs:
-                if str(eval(r(i)))!='null':
-                    solver.add_soft(r(i)==eval(r(i)), 1)
+                if str(topology(r(i)))!='null':
+                    solver.add_soft(r(i)==topology(r(i)), 1)
 
-def shuffle(eval, target, num):   
-    alived = [x for x in target if str(eval(alive(x))) == 'True']
+def shuffle(topology, target, num):   
+    alived = [x for x in target if str(topology(alive(x))) == 'True']
     for i in range(0, num):
         x = randint(0, len(alived)-2)
         y = randint(x+1, len(alived)-1)
-        if str(eval(typeof(alived[x])==typeof(alived[y])))=='True':
+        if str(topology(typeof(alived[x])==typeof(alived[y])))=='True':
             solver.add_soft(typeof(alived[x])!=typeof(alived[y]), 10)
 
 
+def activate(topology, target=comps[1:], num=1, weight=10):
+    i = 0
+    j = 0
+    while(i < num and j<20):
+        j = j+1
+        x = choice(target)
+        if str(topology(alive(x)))=='False':
+           solver.add_soft(alive(x), weight)
+           i = i+1
 
+        
     
     

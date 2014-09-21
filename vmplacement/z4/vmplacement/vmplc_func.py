@@ -2,7 +2,7 @@ from softz3_opt import *
 from softz3_msopt import *
 from z3 import *
 from z3util import *
-from painter import *
+from vmplc_painter import *
 from time import clock
 from random import *
 

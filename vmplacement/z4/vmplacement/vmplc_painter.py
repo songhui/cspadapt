@@ -43,7 +43,7 @@ class ResultPainter():
                 try:
                     tgt = str(self.eval(ref(v)))
                     if tgt in all_nodes_str:
-                        self.G.add_edge(str(v), tgt)
+                        self.G.add_edge(str(v), tgt, label=str(ref))
                 except Z3Exception:
                     None
                     
@@ -52,7 +52,7 @@ class ResultPainter():
                 for v2 in using_vars:
                     try:
                         if str(self.eval(ref(v1,v2)))=='True':
-                            self.G.add_edge(str(v1), str(v2), {'style':'dashed'})
+                            self.G.add_edge(str(v1), str(v2), label=str(ref))
                     except Z3Exception:
                         None
         pos=nx.spring_layout(self.G)
@@ -73,7 +73,15 @@ class ResultPainter():
             ci = ci+1
         #nx.draw(self.G, pos=pos, with_lables=True, node_size=5000)
         nx.draw_networkx_labels(self.G, pos, label)
-        nx.draw_networkx_edges(self.G, pos, self.G.edges())
+        plc_edge = [(x,y) for (x, y, t) in self.G.edges(data=True) if t['label']=='plc']
+        other_edge = list(set(self.G.edges()) - set(plc_edge))
+        
+        print self.G.edges(data=True)
+        print plc_edge
+        print other_edge
+        
+        nx.draw_networkx_edges(self.G, pos, plc_edge, style='solid')
+        nx.draw_networkx_edges(self.G, pos, other_edge, style='dashed')
         
         G2 = nx.Graph()
         G2.add_node('toprint')
