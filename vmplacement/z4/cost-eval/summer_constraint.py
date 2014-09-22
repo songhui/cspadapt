@@ -165,7 +165,7 @@ solver.add_hard(Implies(fast,
                         ))
 solver.add_hard(Implies(private, 
                         quick.cartesian_not_equal([theone], [GhUni,GoogMap])))
-solver.add_hard(Implies(secure, typeof(host(theone))!=EC2Free))
+solver.add_hard(Implies(secure, And(typeof(theone)!=GoogMap, typeof(dEncStr(dGhEnc(theone)))!=StorePltf2)))
 
 for i in comps:
     solver.add_soft(Not(alive(i)),1)

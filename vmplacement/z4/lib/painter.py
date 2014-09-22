@@ -6,7 +6,10 @@ Created on 12 Nov 2013
 
 from z3 import *
 import networkx as nx
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except:
+    print "no matplot"
 import math
 import random
 

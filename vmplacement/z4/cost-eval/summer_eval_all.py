@@ -12,7 +12,8 @@ context_group=[
                [driving, traffic, private],
                [traffic, secure],
                [pollution, private, cheap],
-               [fast, private]
+               [fast, private],
+               [fast, secure]
             ]
 
 
@@ -20,7 +21,7 @@ context_group=[
 
 generated_topologys = []
 
-for xxx in range(0,1):
+for xxx in range(0,3):
     del solver.soft[:]
     for i in comps[numGh+1:]:
         solver.add_soft(Not(alive(i)), 1)
@@ -31,7 +32,7 @@ for xxx in range(0,1):
     '''
         awake comps with default types
     '''
-    defaults = [(instGh, GhDriving), (instEnc, EncPollution), (instStr, StorePltf), (instVm, EC2)]
+    defaults = [(instGh, GhDriving), (instEnc, EncPollution), (instStr, StorePltf), (instVm, EC2Free)]
         
     for i in range(0, 10):
         start_over_div(topology)
@@ -45,6 +46,7 @@ for xxx in range(0,1):
         print (total, shannon)
         generated_topologys.append((topology, total, shannon))
         
+            
     '''
     force gh to be diff types
     '''
